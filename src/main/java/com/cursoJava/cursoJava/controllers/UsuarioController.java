@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.cursoJava.cursoJava.dao.usuarioDao;
 import com.cursoJava.cursoJava.models.Usuario;
 
@@ -42,6 +38,11 @@ public class UsuarioController {
 
         usuarioDao.delete(id);
 
+    }
+
+    @RequestMapping(value = "usuarios",method = RequestMethod.POST)
+    public void postUsuario(@RequestBody Usuario usuario){
+        usuarioDao.registrarUsuario(usuario);
     }
 
 }
