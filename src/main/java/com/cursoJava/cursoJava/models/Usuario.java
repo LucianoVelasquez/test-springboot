@@ -1,49 +1,31 @@
 package com.cursoJava.cursoJava.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name = "usuarios") //Le indicamos que tabla va a utilizar.
 public class Usuario {
+    
+    @Id
+    @Getter @Setter @Column(name = "id") //Con este decorador le indicamos a que columna tiene que hacer referencia
     private Integer id;
+
+    @Getter @Setter @Column(name = "nombre")
     private String name;
+
+    @Getter @Setter @Column(name = "apellido")
     private String apellido;
+
+    @Getter @Setter @Column(name = "email")
     private String email;
+
+    @Getter @Setter @Column(name = "password")
     private String password;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
+    
 }
