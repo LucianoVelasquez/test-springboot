@@ -10,4 +10,8 @@ public interface usuarioDao {
 
     void delete(Integer id);
 
+    void registrarUsuario(Usuario usuario);
+
+    
+
 }
