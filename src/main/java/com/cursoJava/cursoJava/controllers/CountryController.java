@@ -19,18 +19,34 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cursoJava.cursoJava.models.Countries;
 import com.cursoJava.cursoJava.services.CountryService;
 
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/country")
 @RequiredArgsConstructor
+@Tag(name = "Countries", description = "the country API")
 public class CountryController {
 
     private final CountryService countryService;
 
+    @Operation(summary = "Buscar por Id",description = "El id son las primeras dos letras del pais que se quiere buscar")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",description = "Pais encontrado con exito",
+        content = {
+            @Content(mediaType = "application/*+json",
+            schema = @Schema(implementation = Countries.class)),
+        }),
+        @ApiResponse(responseCode = "400",description = "Id del pais incorrecto",content = @Content)
+    })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getCountry(@PathVariable String id){
+    public ResponseEntity<?> getCountry(@Parameter(description = "ejemplo: ar") @PathVariable String id){
         try {
 
             Countries res = countryService.getCountry("."+id);
@@ -46,6 +62,16 @@ public class CountryController {
         }
     }
 
+
+    @Operation(summary = "Busca por nombre",description = "Busca pais por nombre, tambien busca varios nombres por coincidencia.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",description = "Pais encontrado con exito",
+        content = {
+            @Content(mediaType = "application/*+json",
+            schema = @Schema(implementation = Countries.class)),
+        }),
+        @ApiResponse(responseCode = "400",description = "Nombre incorrecto",content = @Content)
+    })
     @GetMapping
     public ResponseEntity<?> getCountries(@RequestParam String name) {
         try {
@@ -64,6 +90,7 @@ public class CountryController {
         }
     }
 
+    @Operation(hidden = true)
     @GetMapping(value = "loadingdata")
     public ResponseEntity<?> cargarDatos() {
         try {
