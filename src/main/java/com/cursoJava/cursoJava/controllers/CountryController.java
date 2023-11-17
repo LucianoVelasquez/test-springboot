@@ -1,9 +1,7 @@
 package com.cursoJava.cursoJava.controllers;
 
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 
@@ -33,7 +31,6 @@ public class CountryController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getCountry(@PathVariable String id){
-
         try {
 
             Countries res = countryService.getCountry("."+id);
@@ -47,7 +44,6 @@ public class CountryController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
         }
-
     }
 
     @GetMapping
@@ -69,8 +65,16 @@ public class CountryController {
     }
 
     @GetMapping(value = "loadingdata")
-    public List<Countries> cargarDatos() {
+    public ResponseEntity<?> cargarDatos() {
+        try {
 
-        return countryService.cargarDatos();
+            List<Countries> res = countryService.cargarDatos();
+
+            return new ResponseEntity<>(res,HttpStatus.OK);
+
+        } catch (Exception e) {
+            
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 }
