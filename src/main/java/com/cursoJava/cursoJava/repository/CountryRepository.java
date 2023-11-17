@@ -12,6 +12,7 @@ public interface CountryRepository extends JpaRepository <Countries,Long> {
 
     public Countries findBytld(String tdl);
     public Countries findByname(String name);
+     public Countries findByid(Long id);
     public List<Countries> findByNameIgnoreCaseStartingWith(String name);
     
 } 

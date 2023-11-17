@@ -4,13 +4,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.boot.actuate.autoconfigure.health.HealthProperties.Status;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.cursoJava.cursoJava.der.CountriesData;
-import com.cursoJava.cursoJava.der.Country;
 import com.cursoJava.cursoJava.models.Countries;
 import com.cursoJava.cursoJava.repository.CountryRepository;
 import com.google.gson.Gson;
@@ -29,6 +25,14 @@ public class CountryService {
 
     public List<Countries> getCountries(String name){
         return dbcontext.findByNameIgnoreCaseStartingWith(name);
+    }
+
+    public Countries getCountryById(Long id){
+        return dbcontext.findByid(id);
+    }
+
+    public void save(Countries countries){
+        dbcontext.save(countries);
     }
 
     public List<Countries> cargarDatos() {
