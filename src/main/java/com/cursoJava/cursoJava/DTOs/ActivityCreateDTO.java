@@ -13,7 +13,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ActivityCreateDTO {
-    Long id;
     String nombre;
     Integer dificultad;
     Integer duracion;
