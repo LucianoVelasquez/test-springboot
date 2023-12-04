@@ -18,6 +18,7 @@ import com.cursoJava.cursoJava.models.Countries;
 import com.cursoJava.cursoJava.services.ActivityService;
 import com.cursoJava.cursoJava.services.CountryService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -37,6 +38,7 @@ public class ActivityController {
         return activityService.getActivities();
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/create")
     public ResponseEntity<?> creatActivities(@RequestBody ActivityCreateDTO activity) {
         try {
