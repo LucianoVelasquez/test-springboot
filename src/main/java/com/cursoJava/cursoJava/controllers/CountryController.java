@@ -1,9 +1,6 @@
 package com.cursoJava.cursoJava.controllers;
 
-
 import java.util.List;
-
-
 
 import org.springframework.http.HttpStatus;
 
@@ -19,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cursoJava.cursoJava.models.Countries;
 import com.cursoJava.cursoJava.services.CountryService;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -36,22 +35,19 @@ public class CountryController {
 
     private final CountryService countryService;
 
-    @Operation(summary = "Buscar por Id",description = "El id son las primeras dos letras del pais que se quiere buscar")
+    @Operation(summary = "Busca todos los paises")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200",description = "Pais encontrado con exito",
-        content = {
-            @Content(mediaType = "application/*+json",
-            schema = @Schema(implementation = Countries.class)),
-        }),
-        @ApiResponse(responseCode = "400",description = "Id del pais incorrecto",content = @Content)
+            @ApiResponse(responseCode = "200", description = "Paises encontrados con exito", content = {
+                    @Content(mediaType = "application/*+json", schema = @Schema(implementation = Countries.class)),
+            }),
+            @ApiResponse(responseCode = "400", description = "Error al buscar paises", content = {
+                    @Content
+            })
     })
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getCountry(@Parameter(description = "ejemplo: ar") @PathVariable String id){
+    @GetMapping()
+    public ResponseEntity<?> getAllCountries() {
         try {
-
-            Countries res = countryService.getCountry("."+id);
-
-            if (res == null) { throw new Exception("Id incorrecto"); }
+            List<Countries> res = countryService.getAllCountries();
 
             return new ResponseEntity<>(res, HttpStatus.OK);
 
@@ -62,46 +58,74 @@ public class CountryController {
         }
     }
 
-
-    @Operation(summary = "Busca por nombre",description = "Busca pais por nombre, tambien busca varios nombres por coincidencia.")
+    @Operation(summary = "Buscar por Id", description = "El id son las primeras dos letras del pais que se quiere buscar")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200",description = "Pais encontrado con exito",
-        content = {
-            @Content(mediaType = "application/*+json",
-            schema = @Schema(implementation = Countries.class)),
-        }),
-        @ApiResponse(responseCode = "400",description = "Nombre incorrecto",content = @Content)
+            @ApiResponse(responseCode = "200", description = "Pais encontrado con exito", content = {
+                    @Content(mediaType = "application/*+json", schema = @Schema(implementation = Countries.class)),
+            }),
+            @ApiResponse(responseCode = "400", description = "Id del pais incorrecto", content = @Content)
     })
-    @GetMapping
-    public ResponseEntity<?> getCountries(@RequestParam String name) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getCountry(@Parameter(description = "ejemplo: ar") @PathVariable String id) {
         try {
 
-            if(name == ""){ throw new Exception("name no puede ser vacio");}
+            Countries res = countryService.getCountry("." + id);
 
-            List<Countries> res = countryService.getCountries(name);
+            if (res == null) {
+                throw new Exception("Id incorrecto");
+            }
 
-            if(res.isEmpty()){ throw new Exception("Nombre incorrecto"); }
-
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
         } catch (Exception e) {
-            
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
     }
 
-    @Operation(hidden = true)
+    @Operation(summary = "Busca por nombre", description = "Busca pais por nombre, tambien busca varios nombres por coincidencia.")
+    
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pais encontrado con exito", content = {
+                    @Content(mediaType = "application/*+json", schema = @Schema(implementation = Countries.class)),
+            }),
+            @ApiResponse(responseCode = "400", description = "Nombre incorrecto", content = @Content)
+    })
+    @GetMapping(value = "name")
+    public ResponseEntity<?> getCountriesByName(@RequestParam String name) {
+        try {
+
+            if (name == "") {
+                throw new Exception("name no puede ser vacio");
+            }
+
+            List<Countries> res = countryService.getCountries(name);
+
+            if (res.isEmpty()) {
+                throw new Exception("Nombre incorrecto");
+            }
+
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(value = "loadingdata")
+    @Hidden
     public ResponseEntity<?> cargarDatos() {
         try {
 
             List<Countries> res = countryService.cargarDatos();
 
-            return new ResponseEntity<>(res,HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
         } catch (Exception e) {
-            
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

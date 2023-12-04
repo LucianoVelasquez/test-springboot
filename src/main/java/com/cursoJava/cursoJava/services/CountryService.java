@@ -35,6 +35,10 @@ public class CountryService {
         dbcontext.save(countries);
     }
 
+    public List<Countries> getAllCountries(){
+        return dbcontext.findAll();
+    }
+
     public List<Countries> cargarDatos() {
         Gson gson = new Gson();
         List<Countries> list = new ArrayList<>();
