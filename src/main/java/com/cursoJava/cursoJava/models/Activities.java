@@ -4,6 +4,7 @@ package com.cursoJava.cursoJava.models;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +26,7 @@ public class Activities {
     Integer duracion;
     String temporada; 
 
-    @ManyToMany(mappedBy = "activities")   
+    @ManyToMany(mappedBy = "activities", cascade = CascadeType.ALL)   
     List<Countries> countries;
    
 }

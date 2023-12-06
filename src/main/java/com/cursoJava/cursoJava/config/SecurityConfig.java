@@ -1,6 +1,5 @@
 package com.cursoJava.cursoJava.config;
 
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,8 +27,9 @@ public class SecurityConfig {
         return httpSecurity
                  .csrf(csrf -> csrf.disable())
                  .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers("/auth/login").permitAll();
                     auth.requestMatchers("/country/**").permitAll();
+                    auth.requestMatchers("/activities").permitAll();
                     auth.requestMatchers("/swagger-ui/index.html").permitAll();
                     auth.requestMatchers("/swagger-ui/index.html#/**").permitAll();
                     auth.requestMatchers("/swagger-ui/**").permitAll();

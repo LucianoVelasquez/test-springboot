@@ -1,6 +1,6 @@
 package com.cursoJava.cursoJava.config;
 
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

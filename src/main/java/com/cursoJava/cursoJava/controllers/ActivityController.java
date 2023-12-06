@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +36,20 @@ public class ActivityController {
     CountryService countryService;
 
     @GetMapping
-    public List<Activities> getActivities() {
+    public ResponseEntity<?> getActivities() {
+        try {
 
-        return activityService.getActivities();
+            List<Activities> res = activityService.getActivities();
+
+            if(res.isEmpty()){ throw new Exception("No hay actividades disponibles"); }
+
+            return new ResponseEntity<>(res,HttpStatus.OK);
+
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+
+        } 
     }
 
     @SecurityRequirement(name = "Bearer Authentication")
@@ -72,6 +86,25 @@ public class ActivityController {
 
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST); 
 
+        }
+    }
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteActivity(@PathVariable Long id){
+        try {
+
+            if(id == null){
+                throw new Exception("El id no tiene que estar vacio");
+            }
+
+            activityService.deleteActivity(id);
+
+            return new ResponseEntity<>("Actividad con id: "+id+" eliminada",HttpStatus.OK);
+            
+        } catch (Exception e) {
+            
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
