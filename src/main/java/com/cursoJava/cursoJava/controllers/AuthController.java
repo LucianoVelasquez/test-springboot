@@ -29,7 +29,7 @@ public class AuthController {
             return ResponseEntity.ok(authService.login(request));
     }
 
-    
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping(value = "/register")
     public ResponseEntity<AuthResponse>  register(@RequestBody RegisterRequest request){
 

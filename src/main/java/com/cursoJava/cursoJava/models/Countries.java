@@ -32,7 +32,7 @@ public class Countries{
     String continents;
     String flags;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
         name = "countriesactivities" , joinColumns = @JoinColumn(name = "countryId", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "acitivityId", referencedColumnName = "id")
